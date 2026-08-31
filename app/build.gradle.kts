@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.quicktoolbar"
+    namespace = "com.android.tools.quicktoolbar"
     compileSdk = 31
 
     defaultConfig {
-        applicationId = "com.example.quicktoolbar"
+        applicationId = "com.android.tools.quicktoolbar"
         minSdk = 29 // Android 10+ (Fully optimized for Android 11)
         targetSdk = 30 // Target Android 11 / One UI
         versionCode = 1
