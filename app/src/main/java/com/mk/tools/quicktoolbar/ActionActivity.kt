@@ -1,5 +1,7 @@
-package com.mk.tools.quicktoolbar
+package com.mk.tools.toolbar
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -7,20 +9,18 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 
-class ActionActivity : AppCompatActivity() {
+class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Capture highlighted text sent by Android 11 selection menu
         val selectedText = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()?.trim() ?: ""
 
         if (selectedText.isNotEmpty()) {
             showQuickMenu(selectedText)
         } else {
+            Toast.makeText(this, "Select text in another app to use Quick Tools", Toast.LENGTH_LONG).show()
             finish()
         }
     }
@@ -34,19 +34,19 @@ class ActionActivity : AppCompatActivity() {
         )
 
         AlertDialog.Builder(this)
-            .setTitle("Quick Tools")
-            .setItems(options) { _, index ->
-                val encodedText = Uri.encode(text)
-                when (index) {
-                    0 -> openLink("https://www.google.com/search?q=$encodedText")
-                    1 -> openLink("https://translate.google.com/?text=$encodedText")
-                    2 -> openLink("https://en.wikipedia.org/wiki/Special:Search?search=$encodedText")
-                    3 -> copyText(text)
-                }
-                finish()
+        .setTitle("Quick Tools")
+        .setItems(options) { _, index ->
+            val encodedText = Uri.encode(text)
+            when (index) {
+                0 -> openLink("https://www.google.com/search?q=$encodedText")
+                1 -> openLink("https://translate.google.com/?text=$encodedText")
+                2 -> openLink("https://en.wikipedia.org/wiki/Special:Search?search=$encodedText")
+                3 -> copyText(text)
             }
-            .setOnDismissListener { finish() }
-            .show()
+            finish()
+        }
+        .setOnDismissListener { finish() }
+        .show()
     }
 
     private fun openLink(url: String) {
